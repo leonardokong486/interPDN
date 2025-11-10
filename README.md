@@ -13,7 +13,9 @@ This is an official implementation of [Time Series Forecasting via Direct Per-St
 
 We employ a base model based on trend-seasonality decomposition.
 The output head of the base model is modified to produce per-step **discrete probability distribution** over a predefined support set.
+
 **Interleaved dual branches**: Two non-shared branches output probability distributions over interleaved support sets, with a consistency constraint applied between them.
+
 **Coarse-scale guidance**: The interleaved dual-branch architecture is replicated at coarser temporal scales, serving as an additional self-supervised signal to guide long-term trend forecasting at regular scales.
 
 <p align="center">
