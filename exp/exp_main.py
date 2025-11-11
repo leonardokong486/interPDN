@@ -42,12 +42,6 @@ class Exp_Main(Exp_Basic):
         model_optim = optim.AdamW(self.model.parameters(), lr=self.args.learning_rate)
         return model_optim
 
-    # # MSE criterion
-    # def _select_criterion(self):
-    #     criterion = nn.MSELoss()
-    #     return criterion
-
-    # MSE and MAE criterion
     def _select_criterion(self):
         mse_criterion = nn.MSELoss()
         mae_criterion = nn.L1Loss()
@@ -114,30 +108,7 @@ class Exp_Main(Exp_Basic):
         early_stopping = EarlyStopping(patience=self.args.patience, verbose=True)
 
         model_optim = self._select_optimizer()
-        # criterion = self._select_criterion() # For MSE criterion
         mse_criterion, mae_criterion = self._select_criterion()
-
-        # # CARD's cosine learning rate decay with warmup
-        # self.warmup_epochs = self.args.warmup_epochs
-
-        # def adjust_learning_rate_new(optimizer, epoch, args):
-        #     """Decay the learning rate with half-cycle cosine after warmup"""
-        #     min_lr = 0
-        #     if epoch < self.warmup_epochs:
-        #         lr = self.args.learning_rate * epoch / self.warmup_epochs 
-        #     else:
-        #         lr = min_lr+ (self.args.learning_rate - min_lr) * 0.5 * \
-        #             (1. + math.cos(math.pi * (epoch - self.warmup_epochs) / (self.args.train_epochs - self.warmup_epochs)))
-                
-        #     for param_group in optimizer.param_groups:
-        #         if "lr_scale" in param_group:
-        #             param_group["lr"] = lr * param_group["lr_scale"]
-        #         else:
-        #             param_group["lr"] = lr
-        #     print(f'Updating learning rate to {lr:.7f}')
-        #     return lr
-
-        # train_times = [] # For computational cost analysis
         for epoch in range(self.args.train_epochs):
             iter_count = 0
             train_loss = []
@@ -178,7 +149,7 @@ class Exp_Main(Exp_Basic):
 
                 loss = mae_criterion(outputs, batch_y)
 
-                # 下采样
+                # downsampling
                 y_down = batch_y.reshape(batch_y.shape[0], batch_y.shape[1] // 4, 4, batch_y.shape[2])
                 y_down = y_down.mean(dim=2) 
 
@@ -265,25 +236,6 @@ class Exp_Main(Exp_Basic):
                 batch_y = batch_y[:, -self.args.pred_len:, f_dim:].to(self.device)
                 outputs = outputs.detach().cpu().numpy()
                 batch_y = batch_y.detach().cpu().numpy()
-
-
-                # sample_idx = 26
-                # outputs_sample = outputs[sample_idx]  # 形状 (pred_len, channel_num)
-                # batch_y_sample = batch_y[sample_idx]   # 形状 (pred_len, channel_num)
-                # # 创建索引列
-                # index_col = list(range(1, len(outputs_sample) + 1))
-                # # 创建数据字典
-                # data_dict = {'Index': index_col}
-                # # 添加每个通道的真实值和预测值列
-                # for ch_idx in range(outputs_sample.shape[1]):
-                #     # 添加真实值列
-                #     data_dict[f'Channel_{ch_idx+1}_true'] = batch_y_sample[:, ch_idx]
-                #     # 添加预测值列
-                #     data_dict[f'Channel_{ch_idx+1}_pred'] = outputs_sample[:, ch_idx]
-                # # 创建DataFrame
-                # df = pd.DataFrame(data_dict)
-                # # 保存为Excel文件
-                # df.to_excel('sample_comparison.xlsx', index=False)
 
                 pred = outputs  # outputs.detach().cpu().numpy()  # .squeeze()
                 true = batch_y  # batch_y.detach().cpu().numpy()  # .squeeze()
