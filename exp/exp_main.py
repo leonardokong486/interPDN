@@ -252,16 +252,9 @@ class Exp_Main(Exp_Basic):
         # print("Inference time: {}".format(test_time/len(test_loader))) # For computational cost analysis
         preds = np.array(preds)
         trues = np.array(trues)
-        # preds = np.concatenate(preds, axis=0) # without the "drop-last" trick
-        # trues = np.concatenate(trues, axis=0) # without the "drop-last" trick
 
         preds = preds.reshape(-1, preds.shape[-2], preds.shape[-1])
         trues = trues.reshape(-1, trues.shape[-2], trues.shape[-1])
-
-        # # result save
-        # folder_path = './results/' + setting + '/'
-        # if not os.path.exists(folder_path):
-        #     os.makedirs(folder_path)
 
         mae, mse = metric(preds, trues)
         print('mse:{}, mae:{}'.format(mse, mae))
@@ -271,9 +264,4 @@ class Exp_Main(Exp_Basic):
         f.write('\n')
         f.write('\n')
         f.close()
-
-        # np.save(folder_path + 'metrics.npy', np.array([mae, mse, rmse, mape, mspe,rse, corr]))
-        # np.save(folder_path + 'pred.npy', preds)
-        # np.save(folder_path + 'true.npy', trues)
-        # np.save(folder_path + 'x.npy', inputx)
         return
