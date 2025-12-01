@@ -7,7 +7,7 @@
 
 </div>
 
-This is an official implementation of [Time Series Forecasting via Direct Per-Step Probability Distribution Modeling].
+This is an official implementation of [Time Series Forecasting via Direct Per-Step Probability Distribution Modeling](https://arxiv.org/pdf/2511.23260).
 
 ## Model Overview
 
