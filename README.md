@@ -60,3 +60,17 @@ We appreciate the following github repos for their valuable code and effort:
 ## Contact
 
 If you have any questions or concerns, please contact us at leonardokong486@gmail.com or submit an issue.
+
+## Citation
+
+If you find this repository useful in your research, please consider citing our paper as follows:
+
+```
+@inproceedings{kong2026interPDN,
+  title={Time Series Forecasting via Direct Per-Step Probability Distribution Modeling},
+  author={Kong, Linghao and Hong, Xiaopeng},
+  booktitle={Proceedings of the 40th Annual AAAI Conference on Artificial Intelligence},
+  year={2026}
+}
+```
+
